@@ -2,6 +2,7 @@
 
 require 'delayed_job_metrics/version'
 require 'prometheus/middleware/exporter'
+require 'delayed_job_metrics/http_basic_auth'
 require 'delayed_job_metrics/exporter'
 require 'delayed_job_metrics/railtie' if defined?(Rails)
 

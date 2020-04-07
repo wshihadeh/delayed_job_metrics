@@ -15,11 +15,27 @@ module DelayedJobMetrics
 
     def call(env)
       if env['PATH_INFO'] == @path
-        format = negotiate(env, @acceptable)
-        format ? process_mertics_request(format) : not_acceptable(FORMATS)
+        if ENV['HTAUTH_METRICS_USER'] && ENV['HTAUTH_METRICS_PASSWORD']
+          http_auth_call(env, :expose_metrics)
+        else
+          expose_metrics(env)
+        end
       else
         @app.call(env)
       end
+    end
+
+    def http_auth_call(env, callback)
+      auth = BasicAuth.new(env) do |u, p|
+        u == ENV['HTAUTH_METRICS_USER'] && p == ENV['HTAUTH_METRICS_PASSWORD']
+      end
+
+      auth.call(env, method(callback))
+    end
+
+    def expose_metrics(env)
+      format = negotiate(env, @acceptable)
+      format ? process_mertics_request(format) : not_acceptable(FORMATS)
     end
 
     def process_mertics_request(format)

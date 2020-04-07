@@ -22,7 +22,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Start Rails server and start scraping metrics
+
+```
+ curl -fs http://127.0.0.1:3000/metrics
+```
+
+### Set metrics endpoint
+Add the below envrinment variable to overwrite the default endpoint
+
+```
+  DELAYED_JOB_METRICS_ENNDPOINT=/my_endpoint
+```
+
+### Setup basic auth
+
+```
+ HTAUTH_METRICS_USER=user
+ HTAUTH_METRICS_PASSWORD=secret
+```
 
 ## Development
 
