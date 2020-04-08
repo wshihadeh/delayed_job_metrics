@@ -39,8 +39,15 @@ module DelayedJobMetrics
     end
 
     def process_mertics_request(format)
+      reset_metrics
       collect_metrics
       respond_with(format)
+    end
+
+    def reset_metrics
+      Prometheus::Client.registry.metrics.each do |metric|
+        metric.values.keys.each { |key | metric.set(0, labels: key) }
+      end
     end
 
     def collect_metrics
