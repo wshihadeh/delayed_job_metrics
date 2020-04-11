@@ -22,11 +22,18 @@ Or install it yourself as:
 
 ## Usage
 
-Start Rails server and start scraping metrics
+### Enable metrics middelware
+
+```
+  DELAYED_JOB_METRICS_ENABLED=true
+```
+
+### Start Rails server and start scraping metrics
 
 ```
  curl -fs http://127.0.0.1:3000/metrics
 ```
+
 
 ### Set metrics endpoint
 Add the below envrinment variable to overwrite the default endpoint

@@ -46,7 +46,7 @@ module DelayedJobMetrics
 
     def reset_metrics
       Prometheus::Client.registry.metrics.each do |metric|
-        metric.values.keys.each { |key | metric.set(0, labels: key) }
+        metric.values.keys.each { |key| metric.set(0, labels: key) }
       end
     end
 
@@ -106,12 +106,11 @@ module DelayedJobMetrics
 
       Delayed::Job.where.not(failed_at: nil)
                   .where('DATE(run_at) = DATE(?)', Time.now)
-                  .group(:queue, :priority, :attempts).count
+                  .group(:queue, :priority).count
                   .each do |data, count|
         @dj_failed_today_count.set(count, labels: {
                                      queue: data[0],
-                                     priority: data[1],
-                                     attempts: data[2]
+                                     priority: data[1]
                                    })
       end
 
@@ -227,7 +226,7 @@ module DelayedJobMetrics
       @dj_failed_count = @registry.gauge(
         :delayed_jobs_queue_failed_total_count,
         docstring: 'The total count of the failed delayed '\
-                   'jobs with errors (Jobs will not be retryed anymore).',
+                   'jobs with errors (Jobs will not be retried anymore).',
         labels: %i[queue priority]
       )
 
@@ -239,9 +238,9 @@ module DelayedJobMetrics
       )
 
       @dj_failed_today_count = @registry.gauge(
-        :delayed_jobs_faild_today_count,
-        docstring: 'The total count of the delayed jobs that faild today).',
-        labels: %i[queue priority attempts]
+        :delayed_jobs_failed_today_count,
+        docstring: 'The total count of the delayed jobs that failed today).',
+        labels: %i[queue priority]
       )
 
       @dj_handler_count = @registry.gauge(
@@ -261,14 +260,14 @@ module DelayedJobMetrics
       @dj_performable_count = @registry.gauge(
         :delayed_jobs_performable_count,
         docstring: 'The total count of the delayed jobs '\
-                   'for the performmable actions).',
+                   'for the performable actions).',
         labels: %i[queue priority attempts handler object method_name]
       )
 
       @dj_performable_failed_count = @registry.gauge(
         :delayed_jobs_performable_failed_count,
         docstring: 'The total count of the delayed jobs '\
-                   'for the performmable actions).',
+                   'for the performable actions).',
         labels: %i[queue priority attempts handler object method_name]
       )
     end

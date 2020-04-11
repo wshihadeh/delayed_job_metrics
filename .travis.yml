@@ -1,6 +1,18 @@
----
 language: ruby
-cache: bundler
+
+branches:
+  only:
+  - master
+
 rvm:
-  - 2.6.3
-before_install: gem install bundler -v 2.1.4
+- 2.6.4
+
+cache: bundler
+bundler_args: "--jobs=3 --retry=3 --without production"
+
+matrix:
+  fast_finish: true
+
+script:
+- bundle exec rubocop
+- bundle exec rspec

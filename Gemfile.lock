@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    delayed_job_metrics (0.1.0)
+    delayed_job_metrics (0.0.1)
       prometheus-client (~> 2.0.0)
       rack (~> 2.2.2)
 
