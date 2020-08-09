@@ -15,7 +15,7 @@ GEM
     parser (2.7.1.0)
       ast (~> 2.4.0)
     prometheus-client (2.0.0)
-    rack (2.2.2)
+    rack (2.2.3)
     rainbow (3.0.0)
     rake (12.3.3)
     rexml (3.2.4)
